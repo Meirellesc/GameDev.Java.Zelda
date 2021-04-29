@@ -18,6 +18,8 @@ public class Player extends Entity
 	//Speed
 	public double speed = 1;
 	
+	public int life = 100;
+	
 	//Player's frames
 	private int frames = 0;
 	private int maxFrames = 12;
