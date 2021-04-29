@@ -1,0 +1,72 @@
+<---------------------------------------------------------------------------------->
+<-------------------------------GAME DESIGN DOCUMENT------------------------------->
+<---------------------------------------------------------------------------------->
+
+		<------------>
+		<---DESIGN--->
+		<------------>
+ -> Background:
+	- Grass
+	- Wood
+	- Stone
+	
+ -> Player:
+ 	- Sprites 
+ 	- Animation
+	
+ -> Enemy:
+ 	- Sprites
+ 	- Animation
+	
+ -> Wepons:
+ 	- Sprites
+ 	- Animation
+ 		- Sword
+ 		- Archery
+ 		- Staff
+ -> Items
+    - Coins
+    - Weapon
+    - Clothes
+    - Boots
+ 
+ -> Inventory
+  
+		<------------->
+		<---DEVELOP--->
+		<------------->
+
+ -> Controller [keyboard only]
+ 	- Up: Up arrow
+ 	- Down: Down arrow
+ 	- Left: Left arrow
+ 	- Right: Right arrow
+ 	- Attack: A key
+ 	
+ -> Attack system
+ 	- Melee: sword
+ 	- Ranged: archery
+	- Ranged: spell
+ 	
+ -> Collect items (passing over of it)
+ 
+ -> According of item, increase:
+ 	- Armor
+ 	- Damage
+ 	- Speed
+ 	
+ -> Map creation system
+ 
+ -> Levels
+ 
+ -> Boss battle
+ 
+ -> Save / Load system
+ 
+ 
+		<----------->
+		<---SOUND--->
+		<----------->
+
+ -> Background music
+ -> Hit sound
