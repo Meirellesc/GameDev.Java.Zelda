@@ -17,8 +17,11 @@ import javax.swing.JFrame;
 
 import com.devparadox.entities.Enemy;
 import com.devparadox.entities.Entity;
+import com.devparadox.entities.LifePack;
 import com.devparadox.entities.Player;
+import com.devparadox.entities.Potion;
 import com.devparadox.graphics.Spritesheet;
+import com.devparadox.graphics.UI;
 import com.devparadox.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener
@@ -44,6 +47,9 @@ public class Game extends Canvas implements Runnable, KeyListener
 	//World
 	public static World world;
 	
+	//UI
+	public UI ui;
+	
 	//Entities
 	public static List<Entity> entities;
 	
@@ -53,6 +59,12 @@ public class Game extends Canvas implements Runnable, KeyListener
 	//Enemy
 	public static List<Enemy> enemies;
 	
+	//Life Pack
+	public static List<LifePack> lifePacks;
+	
+	//Potions
+	public static List<Potion> potions;
+		
 	//Random 
 	public static Random random;
 	
@@ -90,19 +102,27 @@ public class Game extends Canvas implements Runnable, KeyListener
 		
 		//Create the player
 		player = new Player(0,0,16,16,spritesheet.GetSprite(32, 0, 16, 16));
-		
 
 		//Initialize enemies (used for check the enemies collision between themselves)
 		entities = new ArrayList<Entity>();
 		
 		//Initialize entities
 		enemies = new ArrayList<Enemy>();
-		 
+		
+		//Initialize potions
+		potions = new ArrayList<Potion>();
+		
+		//Initialize life packs
+		lifePacks = new ArrayList<LifePack>();
+				
 		//Initialize the world
 		world = new World("/map.png");		
 		
 		//Add into entities
 		entities.add(player);
+		
+		//UI
+		ui = new UI();
 	}
 	
 	/*
@@ -192,6 +212,9 @@ public class Game extends Canvas implements Runnable, KeyListener
 		
 		//Render World
 		world.Render(graph);
+		
+		//Render UI
+		ui.Render(graph);
 		
 		//Render Entities
 		for(int i = 0; i < entities.size(); i++)

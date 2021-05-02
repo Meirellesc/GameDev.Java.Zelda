@@ -75,12 +75,16 @@ public class World
 					else if(actualPixel == 0xFFFFFF00)
 					{
 						//Potion (Yellow)
-						Game.entities.add(new Potion(xx*16,yy*16,16,16,Entity.POTION_EN));
+						Potion potion = new Potion(xx*16,yy*16,16,16,Entity.POTION_EN);
+						Game.entities.add(potion);
+						Game.potions.add(potion);
 					}
 					else if(actualPixel == 0xFF00FF00)
 					{
 						//Lifepack (Green)
-						Game.entities.add(new LifePack(xx*16,yy*16,16,16,Entity.LIFEPACK_EN));
+						LifePack lifePack = new LifePack(xx*16,yy*16,16,16,Entity.LIFEPACK_EN);
+						Game.entities.add(lifePack);
+						Game.lifePacks.add(lifePack);
 					}
 				}
 			}

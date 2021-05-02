@@ -13,13 +13,6 @@ public class Enemy extends Entity
 {
 	private double speed = 0.4;
 	
-	//Collision masks
-	private int xMask;
-	private int yMask;
-	private int wMask = World.TILE_SIZE - 1;
-	private int hMask = World.TILE_SIZE - 1;
-	
-	
 	//Enemy's frames
 	private int frames = 0;
 	private int maxFrames = 12;
@@ -35,6 +28,8 @@ public class Enemy extends Entity
 		sprites[0] = Game.spritesheet.GetSprite(112, 16, 16, 16);
 		sprites[1] = Game.spritesheet.GetSprite(112+16, 16, 16, 16);
 		sprites[2] = Game.spritesheet.GetSprite(112+32, 16, 16, 16);
+		
+		SetFullMask(0,0,15,15);
 	} 
 	
 	public void Tick()
@@ -103,26 +98,24 @@ public class Enemy extends Entity
 	 */
 	public boolean IsCollidingWithEnemy(int xNext, int yNext)
 	{
-		Rectangle currentEnemy = new Rectangle(xNext + xMask, yNext + yMask, wMask, hMask);
+		Rectangle currentEnemyMask = new Rectangle(xNext + xMask, yNext + yMask, wMask, hMask);
 		
 		for(int i=0; i < Game.enemies.size(); i++)
 		{
 			Enemy enemy = Game.enemies.get(i);
 			
 			//Check if is not himself
-			if(enemy == this)
+			if(enemy != this)
 			{
-				continue;
+				//Gets the target enemy
+				Rectangle targetEnemyMask = new Rectangle(enemy.GetX() + xMask, enemy.GetY() + yMask, wMask, hMask);
+				
+				//Do the collision comparison
+				if(currentEnemyMask.intersects(targetEnemyMask))
+				{
+					return true;
+				}
 			}
-			
-			//Gets the target enemy
-			Rectangle targetEnemy = new Rectangle(enemy.GetX() + xMask, enemy.GetY() + yMask, wMask, hMask);
-			
-			//Do the collision comparison
-			if(currentEnemy.intersects(targetEnemy)) 
-			{
-				return true;
-			}					
 		}
 		
 		return false;
@@ -130,11 +123,7 @@ public class Enemy extends Entity
 	
 	public boolean IsCollidingWithPlayer()
 	{
-		Rectangle currentEnemy = new Rectangle(this.GetX() + xMask, this.GetY() + yMask, wMask, hMask);
-		
-		Rectangle player = new Rectangle(Game.player.GetX() + xMask, Game.player.GetY() + yMask, wMask, hMask);
-		
-		return currentEnemy.intersects(player);
+		return IsColliding(this, Game.player);
 	}
 	
 	public void Render(Graphics g)

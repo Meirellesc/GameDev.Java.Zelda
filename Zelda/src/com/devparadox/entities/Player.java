@@ -1,6 +1,8 @@
 package com.devparadox.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.devparadox.main.Game;
@@ -18,7 +20,13 @@ public class Player extends Entity
 	//Speed
 	public double speed = 1;
 	
-	public int life = 100;
+	//Life
+	public double life = 100;
+	public static final double MAX_LIFE = 100; 
+	
+	//Mana
+	public double mana = 100;
+	public static final double MAX_Mana = 100; 
 	
 	//Player's frames
 	private int frames = 0;
@@ -65,6 +73,7 @@ public class Player extends Entity
 		
 		lastPlayerMove = downPlayer[0];
 		
+		SetFullMask(4, 4,width / 2, height / 2);		
 	}
 	
 	/*
@@ -74,24 +83,32 @@ public class Player extends Entity
 	{
 		moved = false;
 		
-		if(up && World.isFree(this.GetX(), (int)(this.GetY() - speed)))
+		if(up && 
+			 World.isFree(this.GetX(), (int)(this.GetY() - speed)) &&
+			 !IsCollidingWithEnemy(this.GetX(), (int)(this.GetY() - speed)))
 		{
 			
 			moved = true;
 			y -= speed;
 		}
-		else if(down && World.isFree(this.GetX(), (int)(this.GetY() + speed)))
+		else if(down && 
+					World.isFree(this.GetX(), (int)(this.GetY() + speed)) &&
+					!IsCollidingWithEnemy(this.GetX(), (int)(this.GetY() + speed)))
 		{
 			moved = true;
 			y += speed;
 		}
 		
-		if(right && World.isFree((int)(this.GetX() + speed), this.GetY()))
+		if(right && 
+				World.isFree((int)(this.GetX() + speed), this.GetY()) &&
+				!IsCollidingWithEnemy((int)(this.GetX() + speed), this.GetY()))
 		{
 			moved = true;
 			x += speed;
 		}
-		else if(left && World.isFree((int)(this.GetX() - speed), this.GetY()))
+		else if(left && 
+					World.isFree((int)(this.GetX() - speed), this.GetY()) &&
+					!IsCollidingWithEnemy((int)(this.GetX() - speed), this.GetY()))
 		{
 			moved = true;
 			x -= speed;
@@ -112,8 +129,50 @@ public class Player extends Entity
 			}
 		}
 		
+		IsCollidingLifePack();
+		
 		Camera.x = Camera.Clamp(this.GetX() - (Game.WIDTH/2), 0, (World.WIDTH * 16) - Game.WIDTH);
 		Camera.y = Camera.Clamp(this.GetY() - (Game.HEIGHT/2), 0, (World.HEIGHT * 16) - Game.HEIGHT);
+	}
+	
+	private boolean IsCollidingWithEnemy(int xNext, int yNext)
+	{
+		Rectangle playerMask = new Rectangle(xNext + xMask, yNext + yMask, wMask, hMask);
+		
+		for(int i=0; i < Game.enemies.size(); i++)
+		{
+			Enemy enemy = Game.enemies.get(i);
+			
+			//Gets the target enemy
+			Rectangle enemyMask = new Rectangle(enemy.GetX() + xMask, enemy.GetY() + yMask, wMask, hMask);
+			
+			//Do the collision comparison
+			if(playerMask.intersects(enemyMask))
+			{
+				return true;
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	public void IsCollidingLifePack()
+	{
+		for(int i=0; i < Game.lifePacks.size(); i++)
+		{
+			LifePack actualLifePack = Game.lifePacks.get(i);
+			
+			if(IsColliding(this, actualLifePack))
+			{
+				this.life += 10;
+				
+				if(life > 100) life = 100;
+				
+				Game.lifePacks.remove(i);
+				Game.entities.remove(actualLifePack);
+			}
+		}
 	}
 	
 	public void Render(Graphics g)
@@ -143,6 +202,10 @@ public class Player extends Entity
 		{
 			g.drawImage(lastPlayerMove, this.GetX() - Camera.x, this.GetY() - Camera.y , null);
 		}
+		
+		//Set the mask to see the collision
+		//g.setColor(Color.LIGHT_GRAY);
+		//g.drawRect(this.GetX() + xMask - Camera.x, this.GetY() + yMask - Camera.y, wMask, hMask);
 	}
 
 }
