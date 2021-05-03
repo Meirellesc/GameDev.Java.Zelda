@@ -11,6 +11,10 @@ import com.devparadox.world.World;
 
 public class Enemy extends Entity 
 {
+	//Life
+	private int life;
+	
+	//Speed
 	private double speed = 0.4;
 	
 	//Enemy's frames
@@ -36,7 +40,7 @@ public class Enemy extends Entity
 	{
 		//Check if isn't colliding with player
 		if(!IsCollidingWithPlayer())
-		{
+		{	
 			//Random -> one way to randomize the enemy "AI" movements
 			if(Game.random.nextInt(100) < 70)
 			{
@@ -71,8 +75,9 @@ public class Enemy extends Entity
 		{
 			if(Game.random.nextInt(100) < 10)
 			{
-				Game.player.life--;
-				System.out.println("Player`s Life: " + Game.player.life);
+				Game.player.life-= Game.random.nextInt(3);
+				Game.player.isDamaged = true;
+				//System.out.println("Player' s Life: " + Game.player.life);
 			}
 		}
 		

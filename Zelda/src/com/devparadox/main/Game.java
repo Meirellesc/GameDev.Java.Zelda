@@ -20,6 +20,8 @@ import com.devparadox.entities.Entity;
 import com.devparadox.entities.LifePack;
 import com.devparadox.entities.Player;
 import com.devparadox.entities.Potion;
+import com.devparadox.entities.Skill;
+import com.devparadox.entities.Weapon;
 import com.devparadox.graphics.Spritesheet;
 import com.devparadox.graphics.UI;
 import com.devparadox.world.World;
@@ -65,6 +67,12 @@ public class Game extends Canvas implements Runnable, KeyListener
 	//Potions
 	public static List<Potion> potions;
 		
+	//Weapons
+	public static List<Weapon> weapons;
+	
+	//Skills
+	public static List<Skill> skills;
+	
 	//Random 
 	public static Random random;
 	
@@ -114,9 +122,15 @@ public class Game extends Canvas implements Runnable, KeyListener
 		
 		//Initialize life packs
 		lifePacks = new ArrayList<LifePack>();
+		
+		//Initialize weapon
+		weapons = new ArrayList<Weapon>();
+		
+		//Initialize skills
+		skills = new ArrayList<Skill>();
 				
 		//Initialize the world
-		world = new World("/map.png");		
+		world = new World("/map_mac.png");		
 		
 		//Add into entities
 		entities.add(player);
@@ -183,10 +197,17 @@ public class Game extends Canvas implements Runnable, KeyListener
 	 */
 	public void Tick()
 	{
+		//Entities actions
 		for(int i = 0; i < entities.size(); i++)
 		{
 			Entity e = entities.get(i);
 			e.Tick();
+		}
+		
+		//Skills shoot actions
+		for(int i = 0; i < skills.size(); i++)
+		{
+			skills.get(i).Tick();
 		}
 	}
 	
@@ -223,9 +244,30 @@ public class Game extends Canvas implements Runnable, KeyListener
 			e.Render(graph);
 		}
 		
+		//Render skills shoots
+		for(int i = 0; i < skills.size(); i++)
+		{
+			Skill s = skills.get(i);
+			s.Render(graph);
+		}
+		
 		graph.dispose();
 		graph = bs.getDrawGraphics();
 		graph.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+
+		//Set the player's info here, for the text not be pixeled
+		//Life's Info
+		graph.setFont(new Font("arial",Font.BOLD, 22));
+		graph.setColor(Color.WHITE);
+		graph.drawString((int)Game.player.life+"/"+(int)Game.player.MAX_LIFE, 57, 32);
+		
+		//Mana's info 
+		graph.setFont(new Font("arial",Font.BOLD, 22));
+		graph.setColor(Color.WHITE);
+		graph.drawString((int)Game.player.mana+"/"+(int)Game.player.MAX_MANA, (Game.WIDTH * 3) - 137, 32);
+		
+
+		//Show image
 		bs.show();
 	}
 	
@@ -323,6 +365,11 @@ public class Game extends Canvas implements Runnable, KeyListener
 			player.left = true;
 		}
 		
+		if(e.getKeyCode() == KeyEvent.VK_X ||
+				e.getKeyCode() == KeyEvent.VK_K)
+		{
+			player.isShooting = true;
+		}
 	}
 
 	@Override

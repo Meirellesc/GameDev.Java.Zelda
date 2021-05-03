@@ -10,6 +10,7 @@ import com.devparadox.entities.Enemy;
 import com.devparadox.entities.Entity;
 import com.devparadox.entities.LifePack;
 import com.devparadox.entities.Potion;
+import com.devparadox.entities.Weapon;
 import com.devparadox.main.Game;
 
 public class World 
@@ -86,6 +87,14 @@ public class World
 						Game.entities.add(lifePack);
 						Game.lifePacks.add(lifePack);
 					}
+					else if(actualPixel == 0xFFA000FF)
+					{
+						//Weapon (Turquoise)
+						Weapon weapon = new Weapon(xx*16,yy*16,16,16,Entity.WORLD_WEAPON_EN);
+						Game.entities.add(weapon);
+						Game.weapons.add(weapon);
+					}
+					
 				}
 			}
 		} 

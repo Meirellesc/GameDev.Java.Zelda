@@ -31,6 +31,10 @@ public class Entity
 	public static BufferedImage POTION_EN = Game.spritesheet.GetSprite(96, 16, 16, 16);
 	
 	public static BufferedImage ENEMY_EN = Game.spritesheet.GetSprite(112, 16, 16, 16);
+	
+	public static BufferedImage WORLD_WEAPON_EN = Game.spritesheet.GetSprite(16, 32, 16, 16);
+	
+	public static BufferedImage WEAPON_EN = Game.spritesheet.GetSprite(32, 32, 16, 16);
 			
 	public Entity(double x, double y, int width, int height, BufferedImage sprite)
 	{
@@ -60,12 +64,6 @@ public class Entity
 	public void Tick()
 	{
 		
-	}
-	
-	public void SetMask(int xMask, int yMask)
-	{
-		this.xMask = xMask;
-		this.yMask = yMask;
 	}
 	
 	public void SetFullMask(int xMask, int yMask, int wMask, int hMask)
